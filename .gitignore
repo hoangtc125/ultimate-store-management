@@ -1,0 +1,12 @@
+# Ignore all pychace
+**/__pycache__/
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
+
+log/**
+# Ignore config
+# config.json

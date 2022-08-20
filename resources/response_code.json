@@ -1,0 +1,56 @@
+{
+    "success": {
+        "code": 200,
+        "message": "Success"
+    },
+    "error": {
+        "system_error": {
+            "code": 1000,
+            "message": "Lỗi hệ thống"
+        },
+        "unauthorized": {
+            "code": 1001,
+            "message": "Không thể xác thực người dùng"
+        },
+        "role_unsupported": {
+            "code": 1002,
+            "message": "Quyền người dùng không được hỗ trợ"
+        },
+        "account_existed": {
+            "code": 1003,
+            "message": "Tài khoản đã tồn tại"
+        },
+        "account_not_existed": {
+            "code": 1004,
+            "message": "Tài khoản không tồn tại"
+        },
+        "expired_token": {
+            "code": 1005,
+            "message": "Token đã quá hạn"
+        },
+        "permission_denied": {
+            "code": 1006,
+            "message": "Không có quyền truy cập"
+        },
+        "missing_old_password": {
+            "code": 1010,
+            "message": "Thiếu mật khẩu cũ khi cập nhật mật khẩu"
+        },
+        "passwords_miss_matching": {
+            "code": 1011,
+            "message": "Nhập lại mật khẩu không khớp với mật khẩu mới"
+        },
+        "invalid_time": {
+            "code": 1012,
+            "message": "Thời gian không hợp lệ"
+        },
+        "shift_not_existed": {
+            "code": 1013,
+            "message": "Ca làm việc không tồn tại"
+        },
+        "empty_time": {
+            "code": 1014,
+            "message": "Thời gian không được rỗng"
+        }
+    }
+}
