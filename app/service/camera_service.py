@@ -26,7 +26,7 @@ class CameraService:
             img = cv2.imdecode(img_arr, -1)
             img = imutils.resize(img, width=settings.IMAGE_WIDTH, height=settings.IMAGE_HEIGHT)
             Image.fromarray(img, 'RGB').show()
-            return base64.b64encode(img)
+            return base64.b64encode(img_arr)
         except:
             raise CustomHTTPException(error_type="ip_camera_error")
 
