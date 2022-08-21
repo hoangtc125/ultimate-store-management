@@ -37,6 +37,6 @@ def check_api_permission(path, request_role=None, request_host=None):
     if path not in API_PERMISSION:
         return
     accepted_role = API_PERMISSION[path]
-    if request_role in accepted_role:
+    if accepted_role == ALLOW_ALL or request_role in accepted_role:
         return
     raise CustomHTTPException(error_type="permission_denied")

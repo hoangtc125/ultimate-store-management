@@ -14,6 +14,7 @@ from app.core import settings
 
 from app.router import (
     account_router,
+    camera_router
 )
 
 
@@ -55,7 +56,6 @@ async def add_request_middleware(request: Request, call_next):
                 request_host=request.client.host,
             )
         except CustomHTTPException as e:
-            logger.log(request.url.path, None, tag=logger.tag.ADD, level=logger.level.ERROR)
             json_res = JSONResponse(
                 status_code=e.status_code,
                 headers={'access-control-allow-origin': '*', "X-Process-Time":str(time.time() - start_time)},
@@ -64,6 +64,7 @@ async def add_request_middleware(request: Request, call_next):
                     "msg": e.error_message
                 }),
             )
+            logger.log(request.url.path, json_res, tag=logger.tag.END)
             return json_res
     response = await call_next(request)
     process_time = time.time() - start_time
@@ -71,7 +72,18 @@ async def add_request_middleware(request: Request, call_next):
     logger.log(request.url.path, response, tag=logger.tag.END)
     return response
 
+@app.exception_handler(CustomHTTPException)
+async def uvicorn_exception_handler(request: Request, exc: CustomHTTPException):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={
+            "status_code": exc.error_code,
+            "msg": exc.error_message
+        }
+    )
+
 app.include_router(account_router.router)
+app.include_router(camera_router.router)
 
 if __name__ == "__main__":
     """

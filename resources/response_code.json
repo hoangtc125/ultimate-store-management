@@ -32,6 +32,10 @@
             "code": 1006,
             "message": "Không có quyền truy cập"
         },
+        "ip_camera_error": {
+            "code": 1007,
+            "message": "Không thể tìm thấy camera"
+        },
         "missing_old_password": {
             "code": 1010,
             "message": "Thiếu mật khẩu cũ khi cập nhật mật khẩu"

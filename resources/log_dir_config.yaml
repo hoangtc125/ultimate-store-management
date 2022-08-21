@@ -1,5 +1,6 @@
 ---
 stranger: stranger
 account: account
+camera: camera
 timeout: timeout
 ...
