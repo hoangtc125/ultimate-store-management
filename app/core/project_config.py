@@ -35,8 +35,8 @@ class Settings(BaseSettings):
     REDIS_POLICY = os.getenv("REDIS_POLICY", "allkeys-lru")
     REDIS_TIME_TO_LIVE = os.getenv("REDIS_TIME_TO_LIVE", 60 * 60 * 24)
     BACKEND_NAME = os.path.basename(BASE_DIR)
-    IMAGE_WIDTH = os.getenv("IMAGE_WIDTH", 1000)
-    IMAGE_HEIGHT = os.getenv("IMAGE_HEIGHT", 1800)
+    IMAGE_WIDTH = os.getenv("IMAGE_WIDTH", 600)
+    IMAGE_HEIGHT = os.getenv("IMAGE_HEIGHT", 600)
 
 settings = Settings()
 print(settings)

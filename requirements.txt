@@ -26,3 +26,4 @@ redis==4.3.4
 editdistance
 pyinstaller
 auto-py-to-exe
+qrcode==7.3.1

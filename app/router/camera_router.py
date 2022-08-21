@@ -1,5 +1,5 @@
 from typing import Any
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 
 from app.core.model import HttpResponse, success_response
 from app.core.api_config import CameraAPI
@@ -11,22 +11,28 @@ from app.utils.router_utils import get_actor_from_request, get_role_from_request
 
 router = APIRouter()
 
+@router.get(CameraAPI.QR_CODE, response_model=HttpResponse)
+async def qr_code(actor=Depends(get_actor_from_request), role=Depends(get_role_from_request)):
+    logger.log(actor, role)
+    result = CameraService().generate_qrcode()
+    return success_response(data=result)
+
+@router.get(CameraAPI.REGISTER, response_model=HttpResponse)
+async def register(request: Request, actor=Depends(get_actor_from_request), role=Depends(get_role_from_request)):
+    logger.log(actor, role)
+    result = await CameraService().register(request.__dict__["scope"]["client"][0])
+    return success_response(data=result)
+
 @router.get(CameraAPI.SELECT_DEVICE, response_model=HttpResponse)
 async def select_device(actor=Depends(get_actor_from_request), role=Depends(get_role_from_request)):
     logger.log(actor, role)
-    result = CameraService().select_device()
+    result = await CameraService().select_device()
     return success_response(data=result)
 
 @router.post(CameraAPI.TAKE_A_SHOT, response_model=HttpResponse)
-async def take_a_shot(device: str, actor=Depends(get_actor_from_request), role=Depends(get_role_from_request)):
+async def take_a_shot(ip: str, actor=Depends(get_actor_from_request), role=Depends(get_role_from_request)):
     logger.log(actor, role)
-    result = CameraService().take_a_shot(device=device)
-    return success_response(data=result)
-
-@router.post(CameraAPI.STREAMING, response_model=HttpResponse)
-async def streaming(device: str, actor=Depends(get_actor_from_request), role=Depends(get_role_from_request)):
-    logger.log(actor, role)
-    result = CameraService().streaming(device=device)
+    result = CameraService().take_a_shot(ip=ip)
     return success_response(data=result)
 
 @router.post(CameraAPI.PREDICT, response_model=HttpResponse)

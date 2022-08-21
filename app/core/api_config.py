@@ -24,9 +24,10 @@ class AccountAPI(BaseAPIModel):
 
 class CameraAPI(BaseAPIModel):
     TAKE_A_SHOT = '/camera/shot'
-    STREAMING = '/camera/streaming'
+    QR_CODE = '/camera/qr'
     SELECT_DEVICE =  '/camera/select'
     PREDICT = '/camera/predict'
+    REGISTER = '/camera/register'
 
 
 ALLOW_ALL = ["*"]
@@ -43,9 +44,10 @@ API_PERMISSION = {
     AccountAPI.UPDATE_STAFF: Role.get_all(),
     AccountAPI.UPDATE_PASSWORD_STAFF: Role.get_all(),
     CameraAPI.TAKE_A_SHOT: ALLOW_ALL,
-    CameraAPI.STREAMING: ALLOW_ALL,
+    CameraAPI.QR_CODE: ALLOW_ALL,
     CameraAPI.SELECT_DEVICE: ALLOW_ALL,
     CameraAPI.PREDICT: ALLOW_ALL,
+    CameraAPI.REGISTER: ALLOW_ALL,
 }
 
 WHITE_LIST_IP = {

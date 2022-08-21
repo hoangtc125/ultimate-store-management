@@ -1,0 +1,15 @@
+GET /_cat/indices?v
+
+PUT account
+PUT bill
+PUT product
+PUT location
+PUT cabinet
+PUT schedule
+PUT shift
+PUT working
+PUT salary
+PUT basesalary
+PUT token
+PUT camera
+
