@@ -11,6 +11,11 @@ from app.utils.router_utils import get_actor_from_request, get_role_from_request
 
 router = APIRouter()
 
+@router.post(CameraAPI.CONTROL, response_model=HttpResponse)
+async def control(ip: str, actor=Depends(get_actor_from_request), role=Depends(get_role_from_request)):
+    logger.log(actor, role)
+    return success_response(data=str("http://" + ip + ":8080"))
+
 @router.get(CameraAPI.QR_CODE, response_model=HttpResponse)
 async def qr_code(actor=Depends(get_actor_from_request), role=Depends(get_role_from_request)):
     logger.log(actor, role)

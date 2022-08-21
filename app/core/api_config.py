@@ -23,6 +23,7 @@ class AccountAPI(BaseAPIModel):
 
 
 class CameraAPI(BaseAPIModel):
+    CONTROL = '/camera/controll'
     TAKE_A_SHOT = '/camera/shot'
     QR_CODE = '/camera/qr'
     SELECT_DEVICE =  '/camera/select'
@@ -43,6 +44,7 @@ API_PERMISSION = {
     AccountAPI.UPDATE_PASSWORD: Role.get_all(),
     AccountAPI.UPDATE_STAFF: Role.get_all(),
     AccountAPI.UPDATE_PASSWORD_STAFF: Role.get_all(),
+    CameraAPI.CONTROL: ALLOW_ALL,
     CameraAPI.TAKE_A_SHOT: ALLOW_ALL,
     CameraAPI.QR_CODE: ALLOW_ALL,
     CameraAPI.SELECT_DEVICE: ALLOW_ALL,
@@ -57,4 +59,5 @@ WHITE_LIST_IP = {
 
 WHITE_LIST_PATH = [
     AccountAPI.LOGIN,
+    '/socket.io/',
 ]
