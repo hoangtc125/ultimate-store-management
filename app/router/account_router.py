@@ -21,7 +21,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     return {"token_type": result.token_type, "access_token": result.token}
 
 @router.post(AccountAPI.REGISTER, response_model=HttpResponse)
-async def register(account_create: AccountCreate, token: str = Depends(oauth2_scheme), actor=Depends(get_actor_from_request)):
+async def register(account_create: AccountCreate, actor=Depends(get_actor_from_request)):
     logger.log(actor, account_create)
     result = await AccountService().create_one_account(account_create)
     return success_response(data=result)

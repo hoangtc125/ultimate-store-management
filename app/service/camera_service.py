@@ -9,6 +9,7 @@ import qrcode
 from io import BytesIO
 from PIL import Image
 from typing import Any
+from app.core.model import ElasticsearchFilter
 
 from app.core.project_config import settings
 from app.core.api_config import CameraAPI
@@ -19,6 +20,7 @@ from app.repo.es_connector import get_repo
 from app.utils.camera_utlils import *
 from app.utils.img_utils import *
 from app.utils.model_utils import to_response_dto
+from app.service.account_service import AccountService
 
 class CameraService:
 
@@ -43,9 +45,9 @@ class CameraService:
         except:
             raise CustomHTTPException(error_type="ip_camera_error")
 
-    def generate_qrcode(self):
+    def generate_qrcode(self, actor):
         hostname = subprocess.run(str("hostname -I").split(), stdout=subprocess.PIPE).stdout.decode('utf-8').split(" ")[0]
-        ping_request = str(hostname + ':' + settings.BACKEND_PORT + CameraAPI.REGISTER)
+        ping_request = str(hostname + ':' + settings.BACKEND_PORT + CameraAPI.REGISTER + '?account=' + actor)
         qr = qrcode.QRCode(
             version=1,
             error_correction=qrcode.constants.ERROR_CORRECT_H,
@@ -60,30 +62,32 @@ class CameraService:
         img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
         return img_str 
 
-    async def register(self, ip: str):
+    async def register(self, ip: str, actor):
         mac = mac_from_ip(ip)
         if not mac:
             raise CustomHTTPException(error_type="ip_camera_error")
         res = await self.camera_repo.get_one_by_id(mac)
         if not res:
-            camera = Camera(mac=mac, ip=ip)
+            camera = Camera(owner=actor, mac_wifi=mac, ip=ip)
             camera_id = await self.camera_repo.insert_one(obj=camera, custom_id=mac)
             return to_response_dto(camera_id, camera, CameraResponse)
-        id, camera = res
-        if camera.ip != ip:
-            id =  await self.camera_repo.update(doc_id=id, obj=camera)
-            return id
-        return None
+        else:
+            id, camera = res
+            camera.owner = actor
+            camera_id = await self.camera_repo.update(doc_id=id, obj=camera)
+            return to_response_dto(camera_id, camera, CameraResponse)
 
-    async def select_device(self):
+    async def select_device(self, actor):
         cameras = await self.camera_repo.get_all()
         res = []
         for doc_id, camera in cameras.items():
-            res.append(to_response_dto(doc_id, camera, CameraResponse))
+            account = await AccountService().get_account_by_username(camera.owner)
+            if not account:
+                continue
+            device = Device(owner=camera.owner, fullname=account.fullname, role=account.role, phone=account.phone, avatar=account.phone, ip=camera.ip)
+            res.append(to_response_dto(doc_id, device, DeviceResponse))
         return res
 
     async def predict(self, img: Any):
         pass
 
-if __name__ == "__main__":
-    CameraService().take_a_shot(device="OPPO-F11-Pro (192.168.1.222) at 82:23:09:0f:d2:46 [ether] on wlo1")

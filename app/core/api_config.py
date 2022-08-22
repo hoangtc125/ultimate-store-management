@@ -35,7 +35,7 @@ ALLOW_ALL = ["*"]
 
 API_PERMISSION = {
     AccountAPI.LOGIN: ALLOW_ALL,
-    AccountAPI.REGISTER: [Role.ADMIN],
+    AccountAPI.REGISTER: ALLOW_ALL,
     AccountAPI.ABOUT_ME: Role.get_all(),
     AccountAPI.GET_ALL: Role.get_all(),
     AccountAPI.DISABLE: Role.get_all(),
@@ -44,11 +44,11 @@ API_PERMISSION = {
     AccountAPI.UPDATE_PASSWORD: Role.get_all(),
     AccountAPI.UPDATE_STAFF: Role.get_all(),
     AccountAPI.UPDATE_PASSWORD_STAFF: Role.get_all(),
-    CameraAPI.CONTROL: ALLOW_ALL,
-    CameraAPI.TAKE_A_SHOT: ALLOW_ALL,
-    CameraAPI.QR_CODE: ALLOW_ALL,
-    CameraAPI.SELECT_DEVICE: ALLOW_ALL,
-    CameraAPI.PREDICT: ALLOW_ALL,
+    CameraAPI.CONTROL: Role.get_all(),
+    CameraAPI.TAKE_A_SHOT: Role.get_all(),
+    CameraAPI.QR_CODE: Role.get_all(),
+    CameraAPI.SELECT_DEVICE: Role.get_all(),
+    CameraAPI.PREDICT: Role.get_all(),
     CameraAPI.REGISTER: ALLOW_ALL,
 }
 
