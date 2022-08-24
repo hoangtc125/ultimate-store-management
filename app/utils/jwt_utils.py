@@ -28,11 +28,11 @@ def get_hashed_password(password):
     return pwd_context.hash(password)
 
 
-def create_access_token(data: TokenPayload) -> Token:
+def create_access_token(id: str, data: TokenPayload) -> Token:
     to_encode = get_dict(data)
     token = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return Token(
-        token=token, created_at=get_current_timestamp(), expires_at=data.expire_time
+        account_id=id, token=token, created_at=get_current_timestamp(), expires_at=data.expire_time
     )
 
 

@@ -77,7 +77,7 @@ class CameraService:
             camera_id = await self.camera_repo.update(doc_id=id, obj=camera)
             return to_response_dto(camera_id, camera, CameraResponse)
 
-    async def select_device(self, actor):
+    async def select_device(self):
         cameras = await self.camera_repo.get_all()
         res = []
         for doc_id, camera in cameras.items():

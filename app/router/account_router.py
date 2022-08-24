@@ -18,7 +18,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     result = await AccountService().authenticate_user(
         form_data.username, form_data.password
     )
-    return {"token_type": result.token_type, "access_token": result.token}
+    return {"token_type": result.token_type, "access_token": result.token, "account_id": result.account_id}
 
 @router.post(AccountAPI.REGISTER, response_model=HttpResponse)
 async def register(account_create: AccountCreate, actor=Depends(get_actor_from_request)):
@@ -37,4 +37,28 @@ async def get_all_active_account(
     token: str = Depends(oauth2_scheme),
 ):
     result = await AccountService().get_all_active_account()
+    return success_response(data=result)
+
+@router.put(AccountAPI.UPDATE, response_model=HttpResponse)
+async def update(account_id: str, account_update: AccountUpdate, token: str = Depends(oauth2_scheme), actor=Depends(get_actor_from_request), role=Depends(get_role_from_request)):
+    logger.log(actor, account_update)
+    result = await AccountService().update_account(account_id=account_id, account_update=account_update, actor=actor, role=role)
+    return success_response(data=result)
+
+@router.put(AccountAPI.UPDATE_PASSWORD, response_model=HttpResponse)
+async def update_password(password_update: PasswordUpdate, token: str = Depends(oauth2_scheme), actor=Depends(get_actor_from_request)):
+    logger.log(actor, password_update)
+    result = await AccountService().update_my_password(form_data=password_update, actor=actor)
+    return success_response(data=result)
+
+@router.put(AccountAPI.UPDATE_STAFF, response_model=HttpResponse)
+async def update_staff(account_id: str, account_update: AccountUpdate, token: str = Depends(oauth2_scheme), actor=Depends(get_actor_from_request), role=Depends(get_role_from_request)):
+    logger.log(actor, account_update)
+    result = await AccountService().update_account(account_id=account_id, account_update=account_update, actor=actor, role=role)
+    return success_response(data=result)
+
+@router.put(AccountAPI.UPDATE_PASSWORD_STAFF, response_model=HttpResponse)
+async def update_password_staff(account_id: str, password_update: PasswordUpdate, token: str = Depends(oauth2_scheme), role=Depends(get_role_from_request)):
+    logger.log(role, password_update)
+    result = await AccountService().update_user_password(account_id=account_id, form_data=password_update, role=role)
     return success_response(data=result)

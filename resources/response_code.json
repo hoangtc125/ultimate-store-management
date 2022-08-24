@@ -36,6 +36,14 @@
             "code": 1007,
             "message": "Không thể tìm thấy camera"
         },
+        "update_role": {
+            "code": 1008,
+            "message": "Không thể thay đổi chức vụ"
+        },
+        "update_admin_account": {
+            "code": 1009,
+            "message": "Không thể cập nhật tài khoản Admin"
+        },
         "missing_old_password": {
             "code": 1010,
             "message": "Thiếu mật khẩu cũ khi cập nhật mật khẩu"
@@ -55,6 +63,10 @@
         "empty_time": {
             "code": 1014,
             "message": "Thời gian không được rỗng"
+        },
+        "change_username": {
+            "code": 1015,
+            "message": "Không thể thay đổi tên đăng nhập"
         }
     }
 }

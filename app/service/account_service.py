@@ -80,12 +80,13 @@ class AccountService:
         account_id = await self.account_repo.insert_one(obj=account)
         return to_response_dto(account_id, account, AccountResponse)
 
-    async def update_account(self, account_id:str,  account_update: AccountUpdate, actor: str, role: str):
+    async def update_account(self, account_id: str,  account_update: AccountUpdate, actor: str, role: str):
         res = await self.account_repo.get_one_by_id(doc_id=account_id)
         if not res:
             raise CustomHTTPException(error_type="account_not_existed")
         _, old_account = res
-        account_update.username = old_account.username
+        if account_update.username != old_account.username:
+            raise CustomHTTPException(error_type="change_username")
         try:
             self.validate_account(account_update)
         except Exception as e:
@@ -103,7 +104,8 @@ class AccountService:
             if account_update.role != old_account.role:  # update user token with new role
                 expire_time = get_timestamp_after(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
                 confirmation_token = create_access_token(
-                    TokenPayload(username=old_account.username, role=account_update.role, expire_time=expire_time)
+                    id=account_id,
+                    data=TokenPayload(username=old_account.username, role=account_update.role, expire_time=expire_time)
                 )
                 token = await self.get_token_by_username(old_account.username)
                 if token:
@@ -124,7 +126,8 @@ class AccountService:
             raise CustomHTTPException(error_type="unauthorized")
         expire_time = get_timestamp_after(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
         confirmation_token = create_access_token(
-            TokenPayload(username=username, role= account.role, expire_time=expire_time)
+            id=account.id,
+            data=TokenPayload(username=username, role= account.role, expire_time=expire_time)
         )
         token = await self.get_token_by_username(username)
         if not token:

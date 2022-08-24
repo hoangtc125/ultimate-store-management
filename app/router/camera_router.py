@@ -12,11 +12,6 @@ from app.router.account_router import oauth2_scheme
 
 router = APIRouter()
 
-@router.post(CameraAPI.CONTROL, response_model=HttpResponse)
-async def control(ip: str, token: str = Depends(oauth2_scheme), actor=Depends(get_actor_from_request), role=Depends(get_role_from_request)):
-    logger.log(actor, role)
-    return success_response(data=str("http://" + ip + ":8080"))
-
 @router.get(CameraAPI.QR_CODE, response_model=HttpResponse)
 async def qr_code(token: str = Depends(oauth2_scheme), actor=Depends(get_actor_from_request), role=Depends(get_role_from_request)):
     logger.log(actor, role)
@@ -32,7 +27,7 @@ async def register(account: str, request: Request, actor=Depends(get_actor_from_
 @router.get(CameraAPI.SELECT_DEVICE, response_model=HttpResponse)
 async def select_device(token: str = Depends(oauth2_scheme), actor=Depends(get_actor_from_request), role=Depends(get_role_from_request)):
     logger.log(actor, role)
-    result = await CameraService().select_device(actor)
+    result = await CameraService().select_device()
     return success_response(data=result)
 
 @router.post(CameraAPI.TAKE_A_SHOT, response_model=HttpResponse)
