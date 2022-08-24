@@ -122,6 +122,8 @@ class AccountService:
         account = await self.get_account_by_username(username)
         if not account:
             raise CustomHTTPException(error_type="unauthorized")
+        if account.is_disabled:
+            raise CustomHTTPException(error_type="unauthorized")
         if not verify_password(password, account.hashed_password):
             raise CustomHTTPException(error_type="unauthorized")
         expire_time = get_timestamp_after(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
@@ -146,6 +148,13 @@ class AccountService:
             res.append(to_response_dto(doc_id, account, AccountResponse))
         return res
 
+    async def get_all(self):
+        accounts = await self.account_repo.get_all()
+        res = []
+        for doc_id, account in accounts.items():
+            res.append(to_response_dto(doc_id, account, AccountResponse))
+        return res
+
     async def disable_account(self, account_id: str):
         res = await self.account_repo.get_one_by_id(doc_id=account_id)
         if not res:
@@ -156,6 +165,20 @@ class AccountService:
         if account.is_disabled:
             return account
         account.is_disabled = True
+        _account = Account(**get_dict(account))
+        doc_id = await self.account_repo.update(doc_id=_id, obj=_account)
+        return to_response_dto(doc_id, _account, AccountResponse)
+
+    async def undisabled_account(self, account_id: str):
+        res = await self.account_repo.get_one_by_id(doc_id=account_id)
+        if not res:
+            raise CustomHTTPException(error_type="account_not_existed")
+        _id, account = res
+        if account.role == Role.ADMIN:
+            raise CustomHTTPException(error_type="update_admin_account")
+        if not account.is_disabled:
+            return account
+        account.is_disabled = False
         _account = Account(**get_dict(account))
         doc_id = await self.account_repo.update(doc_id=_id, obj=_account)
         return to_response_dto(doc_id, _account, AccountResponse)

@@ -32,11 +32,18 @@ async def about_me(token: str = Depends(oauth2_scheme), actor=Depends(get_actor_
     result = await AccountService().get_account_by_username(actor)
     return success_response(data=result)
 
-@router.get(AccountAPI.GET_ALL)
+@router.get(AccountAPI.GET_ALL_ACTIVE)
 async def get_all_active_account(
     token: str = Depends(oauth2_scheme),
 ):
     result = await AccountService().get_all_active_account()
+    return success_response(data=result)
+
+@router.get(AccountAPI.GET_ALL)
+async def get_all(
+    token: str = Depends(oauth2_scheme),
+):
+    result = await AccountService().get_all()
     return success_response(data=result)
 
 @router.put(AccountAPI.UPDATE, response_model=HttpResponse)
@@ -61,4 +68,16 @@ async def update_staff(account_id: str, account_update: AccountUpdate, token: st
 async def update_password_staff(account_id: str, password_update: PasswordUpdate, token: str = Depends(oauth2_scheme), role=Depends(get_role_from_request)):
     logger.log(role, password_update)
     result = await AccountService().update_user_password(account_id=account_id, form_data=password_update, role=role)
+    return success_response(data=result)
+
+@router.delete(AccountAPI.DISABLE, response_model=HttpResponse)
+async def disable(account_id: str, token: str = Depends(oauth2_scheme), role=Depends(get_role_from_request)):
+    logger.log(role, account_id)
+    result = await AccountService().disable_account(account_id=account_id)
+    return success_response(data=result)
+
+@router.put(AccountAPI.UNDISABLED, response_model=HttpResponse)
+async def undisabled(account_id: str, token: str = Depends(oauth2_scheme), role=Depends(get_role_from_request)):
+    logger.log(role, account_id)
+    result = await AccountService().undisabled_account(account_id=account_id)
     return success_response(data=result)

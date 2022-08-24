@@ -14,7 +14,9 @@ class AccountAPI(BaseAPIModel):
     REGISTER = "/account/register"
     ABOUT_ME = "/account/me"
     GET_ALL = "/account/get-all"
+    GET_ALL_ACTIVE = "/account/get-all-active"
     DISABLE = "/account/disable"
+    UNDISABLED = "/account/undisabled"
     ENABLE = "/account/enable"
     UPDATE = "/account/update"
     UPDATE_PASSWORD = "/account/update-password"
@@ -37,8 +39,10 @@ API_PERMISSION = {
     AccountAPI.LOGIN: ALLOW_ALL,
     AccountAPI.REGISTER: ALLOW_ALL,
     AccountAPI.ABOUT_ME: Role.get_all(),
-    AccountAPI.GET_ALL: Role.get_all(),
-    AccountAPI.DISABLE: Role.get_all(),
+    AccountAPI.GET_ALL_ACTIVE: Role.get_all(),
+    AccountAPI.GET_ALL: [Role.ADMIN],
+    AccountAPI.DISABLE: [Role.ADMIN],
+    AccountAPI.UNDISABLED: [Role.ADMIN],
     AccountAPI.ENABLE: Role.get_all(),
     AccountAPI.UPDATE: Role.get_all(),
     AccountAPI.UPDATE_PASSWORD: Role.get_all(),
