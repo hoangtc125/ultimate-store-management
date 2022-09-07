@@ -3,8 +3,10 @@ from datetime import datetime
 from typing import Any, Optional, TypeVar, List
 import json
 
+from app.core.project_config import settings
 
-f_json = open('resources/response_code.json', encoding="utf8")
+
+f_json = open(settings.RESPONSE_CODE_DIR, encoding="utf8")
 response_code = json.load(f_json)
 T = TypeVar("T")
 

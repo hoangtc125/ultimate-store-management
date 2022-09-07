@@ -17,7 +17,7 @@ class BaseAccount(BaseModel):
     created_at: int = get_current_timestamp()
     avatar: Optional[str] = None
     birthday: Optional[str] = None
-    profile: Optional[Dict] = {}
+    profile: Optional[str] = None
 
 
 class Account(BaseAccount, BaseAuditModel):

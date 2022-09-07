@@ -135,10 +135,10 @@ class AccountService:
         if not token:
             await self.token_repo.insert_one(obj=confirmation_token, custom_id=username)
         elif token.expires_at > get_current_timestamp():
-            return token
+            return (token, account)
         else:
             await self.token_repo.update(doc_id=username, obj=confirmation_token)
-        return confirmation_token
+        return (confirmation_token, account)
 
     async def get_all_active_account(self):
         filter = ElasticsearchFilter(field='is_disabled', match=False)

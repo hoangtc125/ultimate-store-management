@@ -27,6 +27,7 @@ class Settings(BaseSettings):
     SECURITY_ALGORITHM = "HS256"
     LOG_LEVEL = logging.DEBUG
     LOG_DIR_MAPPING = BASE_DIR + '/resources/log_dir_config.yaml'
+    RESPONSE_CODE_DIR = BASE_DIR + 'resources/response_code.json'
     LOG_DIR = os.getenv("LOG_DIR", BASE_DIR)
     LOG_TIME_OUT = os.getenv("LOG_TIME_OUT", 5)
     REDIS_MAXMEMORY = os.getenv("REDIS_MAXMEMORY", "50M")

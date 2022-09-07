@@ -15,10 +15,10 @@ oauth2_scheme = CustomOAuth2PasswordBearer(tokenUrl=AccountAPI.LOGIN)
 @router.post(AccountAPI.LOGIN)
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     logger.log(form_data)
-    result = await AccountService().authenticate_user(
+    result, account = await AccountService().authenticate_user(
         form_data.username, form_data.password
     )
-    return {"token_type": result.token_type, "access_token": result.token, "account_id": result.account_id}
+    return {"token_type": result.token_type, "access_token": result.token, "account": account}
 
 @router.post(AccountAPI.REGISTER, response_model=HttpResponse)
 async def register(account_create: AccountCreate, actor=Depends(get_actor_from_request)):
