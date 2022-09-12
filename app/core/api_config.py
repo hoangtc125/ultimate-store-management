@@ -33,6 +33,17 @@ class CameraAPI(BaseAPIModel):
     REGISTER = '/camera/register'
 
 
+class ProductAPI(BaseAPIModel):
+    CREATE = '/product/create'
+    UPDATE = '/product/update'
+    DISABLE = '/product/disable'
+    UNDISABLED = '/product/undisabled'
+    GET = '/product/get'
+    GET_ALL = '/product/get-all'
+    GET_ALL_ACTIVATE = '/product/get-all-active'
+    GET_ALL_MIN = '/product/get-all-min'
+
+
 ALLOW_ALL = ["*"]
 
 API_PERMISSION = {
@@ -54,6 +65,14 @@ API_PERMISSION = {
     CameraAPI.SELECT_DEVICE: Role.get_all(),
     CameraAPI.PREDICT: Role.get_all(),
     CameraAPI.REGISTER: ALLOW_ALL,
+    ProductAPI.CREATE: Role.get_all(),
+    ProductAPI.UPDATE: Role.get_all(),
+    ProductAPI.DISABLE: Role.get_all(),
+    ProductAPI.UNDISABLED: Role.get_all(),
+    ProductAPI.GET: ALLOW_ALL,
+    ProductAPI.GET_ALL: ALLOW_ALL,
+    ProductAPI.GET_ALL_ACTIVATE: ALLOW_ALL,
+    ProductAPI.GET_ALL_MIN: ALLOW_ALL,
 }
 
 WHITE_LIST_IP = {

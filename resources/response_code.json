@@ -67,6 +67,14 @@
         "change_username": {
             "code": 1015,
             "message": "Không thể thay đổi tên đăng nhập"
+        },
+        "product_existed": {
+            "code": 1016,
+            "message": "Mã sản phẩm đã tồn tại"
+        },
+        "product_not_existed": {
+            "code": 1017,
+            "message": "Sản phẩm không tồn tại"
         }
     }
 }

@@ -16,6 +16,7 @@ from app.utils.jwt_utils import (
 )
 from app.utils.model_utils import get_dict, to_response_dto
 from app.utils.time_utils import *
+from app.core.log_config import logger
 
 class AccountService:
 
@@ -46,17 +47,11 @@ class AccountService:
         id, token = res
         return to_response_dto(id, token, Token)
 
-    async def get_account_by_id(self, account_id: str, is_disabled_included: bool = False, raise_not_exist: bool = True):
+    async def get_account_by_id(self, account_id: str):
         res = await self.account_repo.get_one_by_id(account_id)
         if res:
             doc_id, account = res
-            if is_disabled_included or not account.is_disabled:
-                return to_response_dto(doc_id, account, AccountResponse)
-        if raise_not_exist:
-            raise CustomHTTPException(
-                error_type="account_not_existed",
-                message=f"Tài khoản {account_id} không tồn tại"
-            )
+            return to_response_dto(doc_id, account, AccountResponse)
         else:
             return None
 
@@ -85,6 +80,7 @@ class AccountService:
         if not res:
             raise CustomHTTPException(error_type="account_not_existed")
         _, old_account = res
+        logger.log(account_update.username, old_account.username)
         if account_update.username != old_account.username:
             raise CustomHTTPException(error_type="change_username")
         try:
