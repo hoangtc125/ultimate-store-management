@@ -70,7 +70,7 @@ class ESRepo:
         self.els_url = els_url
         self.model = model
         self.idx_name = model.__name__.lower()
-        asyncio.ensure_future(self.create_if_not_exist())
+        # asyncio.ensure_future(self.create_if_not_exist())
 
     async def close_connection(self):
         await self.es_connector.close()

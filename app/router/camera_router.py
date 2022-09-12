@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, List
 from fastapi import APIRouter, Depends, Request
 
 from app.core.model import HttpResponse, success_response
@@ -8,6 +8,7 @@ from app.service.camera_service import CameraService
 from app.model.account import *
 from app.utils.router_utils import get_actor_from_request, get_role_from_request
 from app.router.account_router import oauth2_scheme
+from app.core.project_config import settings
 
 
 router = APIRouter()
@@ -37,7 +38,7 @@ async def take_a_shot(ip: str, token: str = Depends(oauth2_scheme), actor=Depend
     return success_response(data=result)
 
 @router.post(CameraAPI.PREDICT, response_model=HttpResponse)
-async def predict(img: Any, token: str = Depends(oauth2_scheme), actor=Depends(get_actor_from_request), role=Depends(get_role_from_request)):
+def predict(img: List[str], token: str = Depends(oauth2_scheme), actor=Depends(get_actor_from_request), role=Depends(get_role_from_request)):
     logger.log(actor, role)
-    result = await CameraService().predict(img=img)
+    result = CameraService().predictBase64(img, settings.AI_DIR)
     return success_response(data=result)

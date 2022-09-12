@@ -38,6 +38,7 @@ class Settings(BaseSettings):
     BACKEND_NAME = os.path.basename(BASE_DIR)
     IMAGE_WIDTH = os.getenv("IMAGE_WIDTH", 400)
     IMAGE_HEIGHT = os.getenv("IMAGE_HEIGHT", 500)
+    AI_DIR = os.getenv("AI_DIR", str(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../usm-model/"))))
 
 settings = Settings()
 print(settings)

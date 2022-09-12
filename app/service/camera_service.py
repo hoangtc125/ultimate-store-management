@@ -6,10 +6,12 @@ import imutils
 import base64
 import subprocess
 import qrcode
+import os
+import base64
+from tensorflow.keras import models
 from io import BytesIO
 from PIL import Image
 from typing import Any
-from app.core.model import ElasticsearchFilter
 
 from app.core.project_config import settings
 from app.core.api_config import CameraAPI
@@ -88,6 +90,28 @@ class CameraService:
             res.append(to_response_dto(doc_id, device, DeviceResponse))
         return res
 
-    async def predict(self, img: Any):
-        pass
+    def predictBase64(self, listString, path):
+        answer = []
+        classes=[]
+        imgPredict = []
+        for _,dirs,_ in os.walk(path + r'/data'):
+            classes=dirs
+            break
+        classes = sorted(classes)
+        print(classes)
+        for i in listString:
+            binaryImg = i.encode('ascii')
+            with open("imagePredict.png", "wb") as fh:
+                fh.write(base64.decodebytes(binaryImg))
+            imgPre = cv2.imread("imagePredict.png")
+            imgPre = cv2.cvtColor(imgPre, cv2.COLOR_BGR2RGB)
+            print(imgPre.shape)
+            imgPredict.append(imgPre)
+        model = models.load_model(path + r'/model')
+        imgPredict = np.array(imgPredict)
+        encodePre = np.argmax(model.predict(imgPredict), axis=-1)
+        print(encodePre)
+        for i in encodePre:
+            answer.append(classes[i]) 
+        return answer
 
