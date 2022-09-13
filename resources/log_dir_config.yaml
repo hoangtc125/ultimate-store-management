@@ -3,4 +3,6 @@ stranger: stranger
 account: account
 camera: camera
 timeout: timeout
+store: store
+bill: bill
 ...

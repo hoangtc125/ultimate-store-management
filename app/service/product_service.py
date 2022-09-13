@@ -1,6 +1,3 @@
-from locale import strcoll
-from typing import Union
-
 from app.core.constants import Role
 from app.core.model import ElasticsearchFilter, TokenPayload
 from app.core.project_config import settings
@@ -17,7 +14,7 @@ class ProductService:
     def __init__(self):
         self.product_repo = get_repo(Product)
 
-    async def get_product_by_id(self, product_id: strcoll):
+    async def get_product_by_id(self, product_id: str):
         res = await self.product_repo.get_one_by_id(product_id)
         if res:
             doc_id, product = res

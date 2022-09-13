@@ -1,3 +1,4 @@
+from turtle import update
 from app.core import settings
 from app.core.constants import Role
 
@@ -44,6 +45,17 @@ class ProductAPI(BaseAPIModel):
     GET_ALL_MIN = '/product/get-all-min'
 
 
+class StoreAPI(BaseAPIModel):
+    UPDATE = '/store/update'
+    GET = '/store/get'
+
+
+class BillAPI(BaseAPIModel):
+    GET_ALL = '/bill/get-all'
+    CREATE = '/bill/create'
+    GET = '/bill/get'
+
+
 ALLOW_ALL = ["*"]
 
 API_PERMISSION = {
@@ -73,6 +85,11 @@ API_PERMISSION = {
     ProductAPI.GET_ALL: ALLOW_ALL,
     ProductAPI.GET_ALL_ACTIVATE: ALLOW_ALL,
     ProductAPI.GET_ALL_MIN: ALLOW_ALL,
+    StoreAPI.UPDATE: [Role.ADMIN],
+    StoreAPI.GET: [Role.ADMIN],
+    BillAPI.GET: Role.get_all(),
+    BillAPI.GET_ALL: Role.get_all(),
+    BillAPI.CREATE: Role.get_all(),
 }
 
 WHITE_LIST_IP = {

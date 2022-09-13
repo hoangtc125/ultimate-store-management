@@ -16,6 +16,8 @@ from app.router import (
     account_router,
     camera_router,
     product_router,
+    store_router,
+    bill_router,
 )
 
 
@@ -86,6 +88,8 @@ async def uvicorn_exception_handler(request: Request, exc: CustomHTTPException):
 app.include_router(account_router.router)
 app.include_router(camera_router.router)
 app.include_router(product_router.router)
+app.include_router(store_router.router)
+app.include_router(bill_router.router)
 
 if __name__ == "__main__":
     """

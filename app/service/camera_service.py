@@ -1,4 +1,5 @@
-import threading
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 import requests
 import cv2
 import numpy as np
@@ -6,7 +7,6 @@ import imutils
 import base64
 import subprocess
 import qrcode
-import os
 import base64
 from tensorflow.keras import models
 from io import BytesIO
