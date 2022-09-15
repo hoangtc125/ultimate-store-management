@@ -11,7 +11,7 @@ from app.router.account_router import oauth2_scheme
 router = APIRouter()
 
 @router.post(BillAPI.CREATE, response_model=HttpResponse)
-async def create_bill_bla(bill_create: BillCreate, token: str = Depends(oauth2_scheme), actor=Depends(get_actor_from_request)):
+async def create_bill(bill_create: BillCreate, token: str = Depends(oauth2_scheme), actor=Depends(get_actor_from_request)):
     logger.log(actor, bill_create)
     result = await BillService().create_one_bill(bill_create)
     return success_response(data=result)

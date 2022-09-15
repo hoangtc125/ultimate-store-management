@@ -7,6 +7,7 @@ from app.core.api_config import AccountAPI
 from app.core.log_config import logger
 from app.service.account_service import AccountService
 from app.model.account import *
+from app.service.store_service import StoreService
 from app.utils.router_utils import get_actor_from_request, get_role_from_request
 
 router = APIRouter()
@@ -18,7 +19,8 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     result, account = await AccountService().authenticate_user(
         form_data.username, form_data.password
     )
-    return {"token_type": result.token_type, "access_token": result.token, "account": account}
+    store = await StoreService().get_store_by_id()
+    return {"token_type": result.token_type, "access_token": result.token, "account": account, "store": store}
 
 @router.post(AccountAPI.REGISTER, response_model=HttpResponse)
 async def register(account_create: AccountCreate, actor=Depends(get_actor_from_request)):
