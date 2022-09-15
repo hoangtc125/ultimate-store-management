@@ -1,9 +1,6 @@
 from fastapi import FastAPI, Request, Response
 from fastapi.staticfiles import StaticFiles
-# from winreg import HKEY_CLASSES_ROOT, HKEY_CURRENT_USER, OpenKey, QueryValueEx
-# import subprocess   
-# import platform
-# import shutil
+import subprocess   
 import uvicorn
 
 
@@ -40,23 +37,7 @@ async def custom_404_handler(_, __):
         data = fh.read()
     return Response(content=data, media_type="text/html")
 
-# def get_default_browser_path():
-#     browser_path = shutil.which('open')
-#     osPlatform = platform.system()
-#     if osPlatform == 'Windows':
-#         try:
-#             with OpenKey(HKEY_CURRENT_USER, r'SOFTWARE\Microsoft\Windows\Shell\Associations\UrlAssociations\http\UserChoice') as regkey:
-#                 browser_choice = QueryValueEx(regkey, 'ProgId')[0]
-#             with OpenKey(HKEY_CLASSES_ROOT, r'{}\shell\open\command'.format(browser_choice)) as regkey:
-#                 browser_path_tuple = QueryValueEx(regkey, None)
-#                 browser_path = browser_path_tuple[0].split('"')[1]
-#             return browser_path
-#         except Exception:
-#             return "chrome.exe"
-#     else:
-#         return "chrome.exe"
-
 if __name__ == "__main__":
-    # command = r'cmd.exe /c start "" "{}" -app=http://localhost:{}'.format(get_default_browser_path(), str(settings.FRONTEND_PORT))
-    # subprocess.Popen(str(command), shell=False)
+    command = r'firefox http://localhost:{}'.format(str(settings.FRONTEND_PORT))
+    subprocess.Popen(str(command).split(), shell=False)
     uvicorn.run(app2, host="0.0.0.0", port=int(settings.FRONTEND_PORT))
