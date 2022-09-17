@@ -6,9 +6,12 @@ from app.core.api_config import CameraAPI
 from app.core.log_config import logger
 from app.service.camera_service import CameraService
 from app.model.account import *
+from app.utils.model_utils import get_dict
 from app.utils.router_utils import get_actor_from_request, get_role_from_request
 from app.router.account_router import oauth2_scheme
 from app.core.project_config import settings
+from app.core.socket import socket_connection
+from app.core.constants import SocketEvent
 
 
 router = APIRouter()
@@ -23,6 +26,10 @@ async def qr_code(token: str = Depends(oauth2_scheme), actor=Depends(get_actor_f
 async def register(account: str, request: Request, actor=Depends(get_actor_from_request), role=Depends(get_role_from_request)):
     logger.log(actor, role)
     result = await CameraService().register(request.__dict__["scope"]["client"][0], account)
+    await socket_connection.send_data(
+        channel=SocketEvent.CAMERA,
+        data=get_dict(result)
+    )
     return success_response(data=result)
 
 @router.get(CameraAPI.SELECT_DEVICE, response_model=HttpResponse)

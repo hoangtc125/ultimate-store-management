@@ -21,3 +21,6 @@ class SortOrder:
     @staticmethod
     def get_list_sort_order():
         return [SortOrder.DESC, SortOrder.ASC]
+
+class SocketEvent:
+    CAMERA = "camera"

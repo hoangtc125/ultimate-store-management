@@ -1,7 +1,7 @@
 from typing import Dict, List, Optional
 from pydantic import BaseModel
 
-class Bill(BaseModel):
+class Statistic(BaseModel):
   created_at: Optional[str] = None
   totalPrice: Optional[int] = None
   textPrice: Optional[List] = []
@@ -14,9 +14,9 @@ class Bill(BaseModel):
   images: Optional[List] = []
 
 
-class BillCreate(Bill, BaseModel):
+class StatisticCreate(Statistic, BaseModel):
   pass
 
 
-class BillResponse(Bill, BaseModel):
+class StatisticResponse(Statistic, BaseModel):
   id: str

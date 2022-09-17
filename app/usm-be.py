@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 import uvicorn
-# from app.core.socket import socket_connection
+from app.core.socket import socket_connection
 from app.core.filter import authorize_token, check_api_permission
 from app.exception.http_exception import CustomHTTPException
 from app.core.api_config import WHITE_LIST_PATH
@@ -74,6 +74,17 @@ async def add_request_middleware(request: Request, call_next):
     response.headers["X-Process-Time"] = str(process_time)
     logger.log(request.url.path, response, tag=logger.tag.END)
     return response
+
+
+app.mount("/ws", socket_connection())
+
+@app.post("/test_socket")
+async def test_socket(event_name, data: dict):
+    return await socket_connection.send_data(
+        channel=event_name,
+        data=data
+    )
+
 
 @app.exception_handler(CustomHTTPException)
 async def uvicorn_exception_handler(request: Request, exc: CustomHTTPException):
