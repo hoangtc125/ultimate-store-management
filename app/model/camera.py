@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 from pydantic import BaseModel
 
 
@@ -16,9 +16,6 @@ class CameraResponse(BaseCamera):
 class Device(BaseModel):
     owner: str
     fullname: str
-    role: str
-    phone: str
-    avatar: Optional[str] = None
     ip: str
 
 class DeviceResponse(Device):

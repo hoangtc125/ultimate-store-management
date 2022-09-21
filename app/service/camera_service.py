@@ -21,7 +21,7 @@ from app.model.camera import *
 from app.repo.es_connector import get_repo
 from app.utils.camera_utlils import *
 from app.utils.img_utils import *
-from app.utils.model_utils import to_response_dto
+from app.utils.model_utils import get_dict, to_response_dto
 from app.service.account_service import AccountService
 
 class CameraService:
@@ -47,7 +47,7 @@ class CameraService:
         except:
             raise CustomHTTPException(error_type="ip_camera_error")
 
-    def generate_qrcode(self, actor):
+    def generate_qrcode(self, actor=""):
         hostname = subprocess.run(str("hostname -I").split(), stdout=subprocess.PIPE).stdout.decode('utf-8').split(" ")[0]
         ping_request = str(hostname + ':' + settings.BACKEND_PORT + CameraAPI.REGISTER + '?account=' + actor)
         qr = qrcode.QRCode(
@@ -86,8 +86,8 @@ class CameraService:
             account = await AccountService().get_account_by_username(camera.owner)
             if not account:
                 continue
-            device = Device(owner=camera.owner, fullname=account.fullname, role=account.role, phone=account.phone, avatar=account.phone, ip=camera.ip)
-            res.append(to_response_dto(doc_id, device, DeviceResponse))
+            device = Device(owner=camera.owner, fullname=account.fullname, ip=camera.ip)
+            res.append(get_dict(device))
         return res
 
     def predictBase64(self, listString, path):

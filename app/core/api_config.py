@@ -54,6 +54,8 @@ class BillAPI(BaseAPIModel):
     GET_ALL = '/bill/get-all'
     CREATE = '/bill/create'
     GET = '/bill/get'
+    GET_RELATION = '/bill/relation/get'
+    INTO_RELATION = '/bill/relation/into'
 
 
 ALLOW_ALL = ["*"]
@@ -90,6 +92,8 @@ API_PERMISSION = {
     BillAPI.GET: Role.get_all(),
     BillAPI.GET_ALL: Role.get_all(),
     BillAPI.CREATE: Role.get_all(),
+    BillAPI.GET_RELATION: Role.get_all(),
+    BillAPI.INTO_RELATION: Role.get_all(),
 }
 
 WHITE_LIST_IP = {

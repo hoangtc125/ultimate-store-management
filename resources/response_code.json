@@ -75,6 +75,10 @@
         "product_not_existed": {
             "code": 1017,
             "message": "Sản phẩm không tồn tại"
+        },
+        "relation_not_existed": {
+            "code": 1018,
+            "message": "Không tìm thấy quan hệ"
         }
     }
 }

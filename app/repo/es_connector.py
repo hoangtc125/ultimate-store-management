@@ -219,6 +219,35 @@ class ESRepo:
         res = (_res["_id"], self.model(**_res["_source"]))
         return res
 
+    async def bulk_manipulate(self, lst_obj: List[T], custom_id: List[str]=None):
+        if not custom_id:
+            custom_id = [None]*len(lst_obj)
+        if len(lst_obj) != len(custom_id):
+            raise ElasticsearchException("Length of list id is not equal length of list object")
+        data = []
+        for i in lst_obj:
+            if i.__class__ == self.model:
+                continue
+            raise TypeError(
+                f"Can not be inserted into {self.model.__name__}"
+            )
+
+        for obj, id in zip(lst_obj, custom_id):
+            _id = id if id != None else str(uuid4())
+            row_index = {"index": {"_index": self.idx_name, "_id": _id}}
+            row_data = get_dict(obj)
+            data.append(row_index)
+            data.append(row_data)
+        payload = '\n'.join([json.dumps(line) for line in data]) + '\n'
+        els_resp = await self.es_connector.bulk(payload)
+        res = []
+        for els_res in els_resp["items"]:
+            res_ = els_res["index"]
+            status = els_res["index"]["status"]
+            cur_res = res_["_id"] if status != 400 else {"error": res_["error"]}
+            res.append(cur_res)
+        return res
+
 
 def get_repo(model: T, els_url=settings.ELASTIC_URL, new_connection = False) -> ESRepo:
     if new_connection:

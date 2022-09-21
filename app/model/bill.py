@@ -20,3 +20,14 @@ class BillCreate(Bill, BaseModel):
 
 class BillResponse(Bill, BaseModel):
   id: str
+
+class BillRelationItem(BaseModel):
+  id: str
+  status: str
+  created_at: str
+
+class BillRelation(BaseModel):
+  childs: List = []
+
+class BillRelationResponse(BillRelation):
+  id: str

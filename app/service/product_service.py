@@ -1,3 +1,4 @@
+from typing import Dict
 from app.core.constants import Role
 from app.core.model import ElasticsearchFilter, TokenPayload
 from app.core.project_config import settings
@@ -91,3 +92,12 @@ class ProductService:
         _product = Product(**get_dict(product))
         doc_id = await self.product_repo.update(doc_id=_id, obj=_product)
         return to_response_dto(doc_id, _product, ProductResponse)
+
+    async def bulk_update(self, id, quantity):
+        product = await self.get_product_by_id(id)
+        if not product:
+            return None
+        _product = Product(**get_dict(product))
+        _product.quantity = _product.quantity - quantity
+        doc_id = await self.product_repo.update(doc_id=id, obj=_product)
+        return None
