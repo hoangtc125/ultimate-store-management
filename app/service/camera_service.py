@@ -13,7 +13,7 @@ from io import BytesIO
 from PIL import Image
 from typing import Any
 
-from app.core.project_config import settings
+from app.core.project_config import settings, BASE_DIR
 from app.core.api_config import CameraAPI
 from app.core.helpper import mac_from_ip
 from app.exception.http_exception import CustomHTTPException
@@ -101,9 +101,9 @@ class CameraService:
         print(classes)
         for i in listString:
             binaryImg = i.encode('ascii')
-            with open("imagePredict.png", "wb") as fh:
+            with open(BASE_DIR + r'\imagePredict.png', "wb") as fh:
                 fh.write(base64.decodebytes(binaryImg))
-            imgPre = cv2.imread("imagePredict.png")
+            imgPre = cv2.imread(BASE_DIR + r'\imagePredict.png')
             imgPre = cv2.cvtColor(imgPre, cv2.COLOR_BGR2RGB)
             print(imgPre.shape)
             imgPredict.append(imgPre)

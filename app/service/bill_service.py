@@ -26,6 +26,8 @@ class BillService:
         for id, quantity in bill.products.items():
             if (bill.status == 'refund'):
                 await ProductService().bulk_update(id, -int(quantity))
+            elif (bill.status == 'pay1'):
+                pass
             else:
                 await ProductService().bulk_update(id, int(quantity))
         if bill.status in ['pay', 'debt']:
@@ -52,10 +54,10 @@ class BillService:
         return res
 
     async def into_relation(self, id, billRelationItem):
-        res = self.bill_relation_repo.get_one_by_id(id)
+        res = await self.bill_relation_repo.get_one_by_id(id)
         if not res:
             raise CustomHTTPException(error_type="relation_not_existed")
         relation_id, relation = res
-        relation.childs.append(billRelationItem)
+        relation.childs.append(get_dict(billRelationItem))
         doc_id = await self.bill_relation_repo.update(doc_id=relation_id, obj=relation)
         return doc_id

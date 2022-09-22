@@ -12,3 +12,5 @@ log/**
 # config.json
 
 .venv
+build
+dist

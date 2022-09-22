@@ -34,8 +34,8 @@ async def get_relation(token: str = Depends(oauth2_scheme), actor=Depends(get_ac
     result = await BillService().get_relation()
     return success_response(data=result)
 
-@router.get(BillAPI.INTO_RELATION)
+@router.post(BillAPI.INTO_RELATION)
 async def into_relation(id: str, billRelationItem: BillRelationItem, token: str = Depends(oauth2_scheme), actor=Depends(get_actor_from_request)):
     logger.log(actor, token)
-    result = await BillService().get_relation()
+    result = await BillService().into_relation(billRelationItem=billRelationItem, id=id)
     return success_response(data=result)
