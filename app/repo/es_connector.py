@@ -37,7 +37,7 @@ from app.utils.model_utils import (
 from app.core.project_config import settings
 from app.core.model import PaginationModel
 from app.core.model import ElasticsearchFilter
-from app.core.cache import cache_delete
+# from app.core.cache import cache_delete
 
 T = TypeVar("T")
 es_monitor = {}
@@ -135,7 +135,7 @@ class ESRepo:
         )
         return res
 
-    @cache_delete()
+    # @cache_delete()
     async def insert_one(self, obj: T, custom_id=None):
 
         if obj.__class__ != self.model:
@@ -182,7 +182,7 @@ class ESRepo:
         resp = await self.es_connector.delete(index=self.idx_name, id=_id)
         return resp
 
-    @cache_delete()
+    # @cache_delete()
     async def update(self, doc_id, obj):
         if obj.__class__ != self.model:
             raise TypeError(

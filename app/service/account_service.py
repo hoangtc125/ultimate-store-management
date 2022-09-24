@@ -3,7 +3,7 @@ from typing import Union
 from app.core.constants import Role
 from app.core.model import ElasticsearchFilter, TokenPayload
 from app.core.project_config import settings
-from app.core.cache import cache
+# from app.core.cache import cache
 from app.repo.es_connector import get_repo
 from app.exception.http_exception import CustomHTTPException
 from app.model.account import *

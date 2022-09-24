@@ -6,7 +6,7 @@ fastapi==0.65.2
 passlib==1.7.4
 bcrypt==3.2.0
 python-jose==3.3.0
-opencv-python==4.5.5.64
+# opencv-python==4.5.5.64
 PyYAML==5.4.1
 imutils==0.5.4
 numpy==1.19.5
@@ -18,7 +18,7 @@ websockets==9.1
 python-engineio==3.13.2
 Flask-SocketIO==4.3.1
 openpyxl==3.0.9
-python_arptable
+# python_arptable
 xlsxwriter==3.0.3
 requests==2.25.1
 aiofiles==0.8.0
@@ -27,5 +27,5 @@ editdistance
 pyinstaller
 auto-py-to-exe
 qrcode==7.3.1
-tensorflow
-Pillow
+# tensorflow
+# Pillow

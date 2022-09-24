@@ -1,16 +1,16 @@
-import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
-import requests
-import cv2
-import numpy as np
-import imutils
+# import os
+# os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+# import requests
+# import cv2
+# import numpy as np
+# import imutils
 import base64
 import subprocess
 import qrcode
 import base64
-from tensorflow.keras import models
+# from tensorflow.keras import models
 from io import BytesIO
-from PIL import Image
+# from PIL import Image
 from typing import Any
 
 from app.core.project_config import settings, BASE_DIR
@@ -19,8 +19,8 @@ from app.core.helpper import mac_from_ip
 from app.exception.http_exception import CustomHTTPException
 from app.model.camera import *
 from app.repo.es_connector import get_repo
-from app.utils.camera_utlils import *
-from app.utils.img_utils import *
+# from app.utils.camera_utlils import *
+# from app.utils.img_utils import *
 from app.utils.model_utils import get_dict, to_response_dto
 from app.service.account_service import AccountService
 
@@ -30,22 +30,23 @@ class CameraService:
         self.camera_repo = get_repo(Camera)
 
     def take_a_shot(self, ip: str):
-        try:
-            url = str("http://" + ip + ":8080/photo.jpg")
-            img_resp = requests.get(url)
-            img_arr = np.array(bytearray(img_resp.content), dtype=np.uint8)
-            img = cv2.imdecode(img_arr, cv2.IMREAD_COLOR)
-            img = cv2.cvtColor(img , cv2.COLOR_BGR2RGB)
-            img = imutils.resize(img, width=settings.IMAGE_WIDTH, height=settings.IMAGE_HEIGHT)
-            img = Image.fromarray(img)
-            img.show()
-            im_file = BytesIO()
-            img.save(im_file, format="JPEG")
-            im_bytes = im_file.getvalue()  # im_bytes: image in binary format.
-            im_b64 = base64.b64encode(im_bytes)
-            return im_b64
-        except:
-            raise CustomHTTPException(error_type="ip_camera_error")
+        # try:
+        #     url = str("http://" + ip + ":8080/photo.jpg")
+        #     img_resp = requests.get(url)
+        #     img_arr = np.array(bytearray(img_resp.content), dtype=np.uint8)
+        #     img = cv2.imdecode(img_arr, cv2.IMREAD_COLOR)
+        #     img = cv2.cvtColor(img , cv2.COLOR_BGR2RGB)
+        #     img = imutils.resize(img, width=settings.IMAGE_WIDTH, height=settings.IMAGE_HEIGHT)
+        #     img = Image.fromarray(img)
+        #     img.show()
+        #     im_file = BytesIO()
+        #     img.save(im_file, format="JPEG")
+        #     im_bytes = im_file.getvalue()  # im_bytes: image in binary format.
+        #     im_b64 = base64.b64encode(im_bytes)
+        #     return im_b64
+        # except:
+        #     raise CustomHTTPException(error_type="ip_camera_error")
+        return None
 
     def generate_qrcode(self, actor=""):
         hostname = subprocess.run(str("hostname -I").split(), stdout=subprocess.PIPE).stdout.decode('utf-8').split(" ")[0]
@@ -91,27 +92,27 @@ class CameraService:
         return res
 
     def predictBase64(self, listString, path):
-        answer = []
-        classes=[]
-        imgPredict = []
-        for _,dirs,_ in os.walk(path + r'/data'):
-            classes=dirs
-            break
-        classes = sorted(classes)
-        print(classes)
-        for i in listString:
-            binaryImg = i.encode('ascii')
-            with open(BASE_DIR + r'\imagePredict.png', "wb") as fh:
-                fh.write(base64.decodebytes(binaryImg))
-            imgPre = cv2.imread(BASE_DIR + r'\imagePredict.png')
-            imgPre = cv2.cvtColor(imgPre, cv2.COLOR_BGR2RGB)
-            print(imgPre.shape)
-            imgPredict.append(imgPre)
-        model = models.load_model(path + r'/model')
-        imgPredict = np.array(imgPredict)
-        encodePre = np.argmax(model.predict(imgPredict), axis=-1)
-        print(encodePre)
-        for i in encodePre:
-            answer.append(classes[i]) 
-        return answer
-
+        # answer = []
+        # classes=[]
+        # imgPredict = []
+        # for _,dirs,_ in os.walk(path + r'/data'):
+        #     classes=dirs
+        #     break
+        # classes = sorted(classes)
+        # print(classes)
+        # for i in listString:
+        #     binaryImg = i.encode('ascii')
+        #     with open(BASE_DIR + r'\imagePredict.png', "wb") as fh:
+        #         fh.write(base64.decodebytes(binaryImg))
+        #     imgPre = cv2.imread(BASE_DIR + r'\imagePredict.png')
+        #     imgPre = cv2.cvtColor(imgPre, cv2.COLOR_BGR2RGB)
+        #     print(imgPre.shape)
+        #     imgPredict.append(imgPre)
+        # model = models.load_model(path + r'/model')
+        # imgPredict = np.array(imgPredict)
+        # encodePre = np.argmax(model.predict(imgPredict), axis=-1)
+        # print(encodePre)
+        # for i in encodePre:
+        #     answer.append(classes[i]) 
+        # return answer
+        return ["te"]
